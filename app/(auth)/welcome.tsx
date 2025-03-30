@@ -83,7 +83,7 @@ export default function WelcomeScreen() {
 
       <TouchableOpacity 
         style={[styles.socialButton, { backgroundColor: '#f0f0f0' }]}
-        onPress={() => console.log('Correo pressed')}
+        onPress={() => router.navigate('/(auth)/email-auth')}
       >
         <MaterialIcons name="email" size={24} color="#333" />
         <Text style={[styles.socialButtonText, { color: '#333' }]}>Continuar con Correo</Text>
