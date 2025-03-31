@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
-    color: '#4CAF50', // Verde
+    color: '#fff', // color de texto
   },
   subtitle: {
     fontSize: 16,

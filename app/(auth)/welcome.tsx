@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { router } from 'expo-router';
 import { MaterialIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 
@@ -9,11 +9,8 @@ export default function WelcomeScreen() {
   const [callingCode] = useState(['52']); // Código fijo para México
 
   const handleContinue = async () => {
-    const fullPhone = `+52${phone}`; // Combina código + número
-    router.navigate({
-      pathname: '/(auth)/verify',
-      params: { phone: fullPhone },
-    });
+    Keyboard.dismiss(); // Cierra el teclado al continuar
+    const fullPhone = `+52${phone}`;
     setIsLoading(true);
     try {
       const destination = `+${callingCode}${phone}`;
@@ -29,85 +26,87 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Image 
-        source={require('../assets/logo.jpg')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      
-      <Text style={styles.title}>Bienvenido a PALTA</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Image 
+          source={require('../assets/logo.jpg')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        
+        <Text style={styles.title}>Bienvenido a PALTA</Text>
 
-      {/* Campo de teléfono (único campo ahora) */}
-      <View style={styles.phoneInputContainer}>
-  <View style={styles.countryCodeButton}>
-    <Text style={{ fontSize: 20 }}>🇲🇽</Text> {/* Solo la bandera */}
-    <Text style={styles.countryCodeText}>+52</Text> {/* Texto fijo */}
-  </View>
-  <TextInput
-    style={styles.phoneInput}
-    placeholder="Ingresa tu teléfono"
-    placeholderTextColor="#999"
-    keyboardType="phone-pad"
-    value={phone}
-    onChangeText={setPhone}
-  />  
-  
-      </View>
+        {/* Campo de teléfono */}
+        <View style={styles.phoneInputContainer}>
+          <View style={styles.countryCodeButton}>
+            <Text style={{ fontSize: 20 }}>🇲🇽</Text>
+            <Text style={styles.countryCodeText}>+52</Text>
+          </View>
+          
+          <TextInput
+            style={styles.phoneInput}
+            placeholder="Ingresa tu teléfono"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+            blurOnSubmit={true}
+          />
+        </View>
 
-      <TouchableOpacity 
-        style={[styles.button, !phone && styles.buttonDisabled]}
-        onPress={handleContinue}
-        disabled={isLoading || !phone}
-      >
-        <Text style={styles.buttonText}>
-          {isLoading ? 'Enviando código...' : 'Continuar'}
+        <TouchableOpacity 
+          style={[styles.button, !phone && styles.buttonDisabled]}
+          onPress={handleContinue}
+          disabled={isLoading || !phone}
+        >
+          <Text style={styles.buttonText}>
+            {isLoading ? 'Enviando código...' : 'Continuar'}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Separador */}
+        <View style={styles.separator}>
+          <View style={styles.separatorLine} />
+          <Text style={styles.separatorText}>o</Text>
+          <View style={styles.separatorLine} />
+        </View>
+
+        {/* Botones sociales */}
+        <TouchableOpacity 
+          style={[styles.socialButton, { backgroundColor: '#4285F4' }]}
+          onPress={() => console.log('Google pressed')}
+        >
+          <FontAwesome name="google" size={24} color="#fff" />
+          <Text style={styles.socialButtonText}>Continuar con Google</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={[styles.socialButton, { backgroundColor: '#000' }]}
+          onPress={() => console.log('Apple pressed')}
+        >
+          <AntDesign name="apple1" size={24} color="#fff" />
+          <Text style={[styles.socialButtonText, { color: '#fff' }]}>Continuar con Apple</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={[styles.socialButton, { backgroundColor: '#f0f0f0' }]}
+          onPress={() => router.navigate('/(auth)/email-auth')}
+        >
+          <MaterialIcons name="email" size={24} color="#333" />
+          <Text style={[styles.socialButtonText, { color: '#333' }]}>Continuar con Correo</Text>
+        </TouchableOpacity>
+
+        {/* Términos y condiciones */}
+        <Text style={styles.footerText}>
+          Al continuar, aceptas nuestros{' '}
+          <Text style={styles.linkText}>Términos</Text> y{' '}
+          <Text style={styles.linkText}>Privacidad</Text>
         </Text>
-      </TouchableOpacity>
-
-      {/* Separador */}
-      <View style={styles.separator}>
-        <View style={styles.separatorLine} />
-        <Text style={styles.separatorText}>o</Text>
-        <View style={styles.separatorLine} />
       </View>
-
-      {/* Botones sociales (Google, Apple, Correo) */}
-      <TouchableOpacity 
-        style={[styles.socialButton, { backgroundColor: '#4285F4' }]}
-        onPress={() => console.log('Google pressed')}
-      >
-        <FontAwesome name="google" size={24} color="#fff" />
-        <Text style={styles.socialButtonText}>Continuar con Google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={[styles.socialButton, { backgroundColor: '#000' }]}
-        onPress={() => console.log('Apple pressed')}
-      >
-        <AntDesign name="apple1" size={24} color="#fff" />
-        <Text style={[styles.socialButtonText, { color: '#fff' }]}>Continuar con Apple</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={[styles.socialButton, { backgroundColor: '#f0f0f0' }]}
-        onPress={() => router.navigate('/(auth)/email-auth')}
-      >
-        <MaterialIcons name="email" size={24} color="#333" />
-        <Text style={[styles.socialButtonText, { color: '#333' }]}>Continuar con Correo</Text>
-      </TouchableOpacity>
-
-      {/* Términos y condiciones */}
-      <Text style={styles.footerText}>
-        Al continuar, aceptas nuestros{' '}
-        <Text style={styles.linkText}>Términos</Text> y{' '}
-        <Text style={styles.linkText}>Privacidad</Text>
-      </Text>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
-// Estilos (igual que antes, pero elimina los relacionados con el selector de pestañas)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -130,19 +129,20 @@ const styles = StyleSheet.create({
   },
   phoneInputContainer: {
     flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 24,
-  backgroundColor: '#1e1e1e', // Fondo oscuro para todo el campo
-  borderRadius: 12,
-  borderWidth: 1,
-  borderColor: '#333',
+    alignItems: 'center',
+    marginBottom: 24,
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#333',
+    overflow: 'hidden',
   },
   countryCodeButton: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     backgroundColor: '#1e1e1e',
-    borderRightWidth: 1, // Línea divisoria
+    borderRightWidth: 1,
     borderRightColor: '#333'
   },
   countryCodeText: {
@@ -152,12 +152,10 @@ const styles = StyleSheet.create({
   phoneInput: {
     flex: 1,
     height: 56,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 12,
     paddingHorizontal: 16,
     fontSize: 16,
     backgroundColor: '#fafafa',
+    color: '#000',
   },
   button: {
     backgroundColor: '#4CAF50',
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontWeight: '600',
     fontSize: 16,
-    color: '#fff', // Color por defecto (Google/Apple)
+    color: '#fff',
   },
   footerText: {
     textAlign: 'center',

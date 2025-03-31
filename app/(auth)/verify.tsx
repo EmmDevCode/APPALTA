@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function VerifyScreen() {
   const { phone, email } = useLocalSearchParams<{
@@ -31,8 +32,16 @@ export default function VerifyScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Verifica tu {phone ? 'teléfono' : 'correo'}</Text>
+      <View style={styles.container}>
+        {/* Botón de regreso ahora dentro del View principal */}
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#4CAF50" />
+        </TouchableOpacity>
+  
+        <Text style={styles.title}>Verifica tu {phone ? 'teléfono' : 'correo'}</Text>
       <Text style={styles.subtitle}>
         Enviamos un código a: {'\n'}
         <Text style={styles.highlight}>{phone || email}</Text>
@@ -65,6 +74,8 @@ export default function VerifyScreen() {
         <Text style={styles.resendText}>¿No recibiste el código? <Text style={styles.linkText}>Reenviar</Text></Text>
       </TouchableOpacity>
     </View>
+
+  
   );
 }
 
@@ -72,26 +83,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     justifyContent: 'center',
+    
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
-    color: '#333',
+    color: '#fff',
   },
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 40,
-    color: '#666',
+    color: '#fff',
     lineHeight: 24,
   },
   highlight: {
     fontWeight: 'bold',
-    color: '#007AFF',
+    color: '#4CAF50',
   },
   input: {
     height: 56,
@@ -106,7 +118,7 @@ const styles = StyleSheet.create({
     letterSpacing: 8, // Para mejor visualización del código
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4CAF50',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -124,11 +136,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   resendText: {
-    color: '#666',
+    color: '#fff',
     fontSize: 14,
   },
   linkText: {
-    color: '#007AFF',
+    color: '#4CAF50',
     fontWeight: '600',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 1,
   },
 });
