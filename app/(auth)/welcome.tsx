@@ -6,9 +6,14 @@ import { MaterialIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 export default function WelcomeScreen() {
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [callingCode] = useState('52'); // Código fijo para México
+  const [callingCode] = useState(['52']); // Código fijo para México
 
   const handleContinue = async () => {
+    const fullPhone = `+52${phone}`; // Combina código + número
+    router.navigate({
+      pathname: '/(auth)/verify',
+      params: { phone: fullPhone },
+    });
     setIsLoading(true);
     try {
       const destination = `+${callingCode}${phone}`;
@@ -35,16 +40,19 @@ export default function WelcomeScreen() {
 
       {/* Campo de teléfono (único campo ahora) */}
       <View style={styles.phoneInputContainer}>
-        <View style={styles.countryCodeButton}>
-          <Text style={styles.countryCodeText}>+{callingCode}</Text>
-        </View>
-        <TextInput
-          style={styles.phoneInput}
-          placeholder="Ingresa tu teléfono"
-          keyboardType="phone-pad"
-          value={phone}
-          onChangeText={setPhone}
-        />
+  <View style={styles.countryCodeButton}>
+    <Text style={{ fontSize: 20 }}>🇲🇽</Text> {/* Solo la bandera */}
+    <Text style={styles.countryCodeText}>+52</Text> {/* Texto fijo */}
+  </View>
+  <TextInput
+    style={styles.phoneInput}
+    placeholder="Ingresa tu teléfono"
+    placeholderTextColor="#999"
+    keyboardType="phone-pad"
+    value={phone}
+    onChangeText={setPhone}
+  />  
+  
       </View>
 
       <TouchableOpacity 
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
   },
   logo: {
     width: 120,
@@ -118,21 +126,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
-    color: '#333',
+    color: '#fff',
   },
   phoneInputContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
+  alignItems: 'center',
+  marginBottom: 24,
+  backgroundColor: '#1e1e1e', // Fondo oscuro para todo el campo
+  borderRadius: 12,
+  borderWidth: 1,
+  borderColor: '#333',
   },
   countryCodeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 12,
-    marginRight: 10,
+    backgroundColor: '#1e1e1e',
+    borderRightWidth: 1, // Línea divisoria
+    borderRightColor: '#333'
   },
   countryCodeText: {
     fontWeight: '600',
+    color: '#fff',
   },
   phoneInput: {
     flex: 1,
@@ -145,7 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4CAF50',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
