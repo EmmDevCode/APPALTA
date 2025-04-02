@@ -42,13 +42,13 @@ export default function ProfileScreen() {
       </Link>
       
       {/* 4. Otras opciones */}
-      <Link href="/profile/Addresses" asChild>
+      <Link href="/profile/adresses" asChild>
         <TouchableOpacity style={styles.option}>
           <Text>Direcciones</Text>
         </TouchableOpacity>
       </Link>
       
-      <Link href="/profile/PaymentMethods" asChild>
+      <Link href="/profile/Payment" asChild>
         <TouchableOpacity style={styles.option}>
           <Text>Métodos de Pago</Text>
         </TouchableOpacity>
