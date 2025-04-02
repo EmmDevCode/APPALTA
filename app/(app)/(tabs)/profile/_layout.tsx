@@ -26,24 +26,18 @@ export default function ProfileLayout() {
       />
       {/* Pantallas de payment */}
       <Stack.Screen 
-        name="Payment/index"  // Cambiado a "payment/index"
+        name="Payment/index" 
         options={{ 
           title: 'Métodos de Pago',
-          headerShown: true 
+          headerShown: true // Muestra header solo aquí
         }} 
       />
       <Stack.Screen 
         name="Payment/AddCardScreen" 
         options={{ 
           title: 'Agregar Tarjeta',
-          headerShown: true 
-        }} 
-      />
-      <Stack.Screen 
-        name="Support" 
-        options={{ 
-          title: 'Soporte', 
-          headerShown: true 
+          headerShown: true,
+          presentation: 'modal' // Opcional: para estilo modal
         }} 
       />
     </Stack>

@@ -35,9 +35,11 @@ export default function PaymentMethods() {
   };
 
   const handleAddCard = () => {
-    router.push('/profile/Payment/AddCardScreen'); // Ruta corregida
+    router.push({
+      pathname: '/profile/Payment/AddCardScreen',
+      params: { key: Date.now().toString() } // Evita el undefined key
+    });
   };
-
   const setAsDefault = (id: string) => {
     setMethods(prev => prev.map(method => ({
       ...method,

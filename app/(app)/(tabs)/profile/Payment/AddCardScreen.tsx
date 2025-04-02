@@ -2,8 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import { router } from "expo-router";
 import { useState } from "react";
 
-export default function AddCardScreen() {
-  router.push('/profile/Payment') // <-- Añade esta línea
+export default function AddCardScreen() { // <-- Añade esta línea
   const [cardData, setCardData] = useState({
     number: '',
     expiry: '',
